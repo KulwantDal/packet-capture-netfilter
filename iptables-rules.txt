@@ -1,0 +1,10 @@
+iptables -t nat -A PREROUTING -p tcp --dport 2005 -j NFQUEUE --queue-num 1
+iptables -t nat -A PREROUTING -p tcp --dport 2005 -j DNAT --to 129.173.84.226
+
+iptables -t nat -A POSTROUTING -j MASQUERADE
+iptables -A FORWARD -j ACCEPT
+
+
+
+iptables -t nat -A PREROUTING -p tcp --dport 2005 -j DNAT --to-destination 129.173.84.226:2005
+iptables -t nat -A POSTROUTING -p tcp -d 129.173.84.226 --dport 2005 -j SNAT --to-source 192.168.201.72

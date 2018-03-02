@@ -6,5 +6,20 @@ iptables -A FORWARD -j ACCEPT
 
 
 
-iptables -t nat -A PREROUTING -p tcp --dport 2005 -j DNAT --to-destination 129.173.84.226:2005
-iptables -t nat -A POSTROUTING -p tcp -d 129.173.84.226 --dport 2005 -j SNAT --to-source 192.168.201.72
+iptables -t nat -A PREROUTING -p tcp -d 134.190.205.168 --dport 2005 -j DNAT --to-destination 129.173.84.226:2005
+iptables -A FORWARD -p tcp --dport 2005 -j NFQUEUE --queue-num 1
+iptables -t nat -A POSTROUTING -p tcp -d 129.173.84.226 --dport 2005 -j SNAT --to-source 134.190.205.168
+
+
+iptables -t nat -A PREROUTING -p tcp -d 134.190.205.168 --dport 2005 -j DNAT --to-destination 35.167.58.122:22
+iptables -A FORWARD -p tcp --dport 22 -j NFQUEUE --queue-num 1
+iptables -t nat -A POSTROUTING -p tcp -d 35.167.58.122 --dport 22 -j SNAT --to-source 134.190.205.168
+
+
+iptables -t nat -A PREROUTING -p tcp -d 134.190.205.168 --dport 2005 -j DNAT --to-destination 134.190.205.168:23
+iptables -A FORWARD -p tcp --dport 23 -j NFQUEUE --queue-num 1
+iptables -t nat -A POSTROUTING -p tcp -d 134.190.205.168 --dport 23 -j SNAT --to-source 134.190.205.168
+
+
+
+134.190.205.168
